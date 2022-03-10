@@ -11,4 +11,10 @@ Trading Bot built using the Alpaca API in Python. Indicators used for Signal Gen
     2. Stoch: Lower Band, Upper Band, K Smoothing, D Smoothing
     3. EMA: Period, Smoothing
 
-2. prjve
+2. Tickers.txt: Add ticker symbols (seperated by space) to check the critera for
+3. authAlpaca.txt: Add Alpaca API Key and Secret Key for the bot to start trading. Change *"BASE-URL"* to *"api.alpaca.markets"* to trade in real-time markets.
+
+## Root Dir
+
+1. config_params.py: Initializes all the params set by the user in ConfigFile.txt
+2. indicator.py: Calculates values and generates signals for all the indicators enabled by the user
