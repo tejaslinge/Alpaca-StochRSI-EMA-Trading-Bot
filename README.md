@@ -10,3 +10,5 @@ Trading Bot built using the Alpaca API in Python. Indicators used for Signal Gen
     1. StochRSI: Lower Band, Upper Band, K, D, RSI Length, etc)
     2. Stoch: Lower Band, Upper Band, K Smoothing, D Smoothing
     3. EMA: Period, Smoothing
+
+2. prjve
