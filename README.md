@@ -25,3 +25,5 @@ After the bot starts checking for the buy/sell criteria and places the first tra
 2. Open Orders.csv: CSV file with all the open positions held by the bot. The bot will check for returns using this file and sell once the sell criteria (Stop Loss/Limit Price/Trailing Stop) has been met. The bot will remove the position from _Open Orders.csv_ once it's closed.
 3. Time and Coins.csv: Using this file, the bot will ensure that no 2 (or more) trades are placed for the same ticker in the _sleep_time_between_trades_ (parameter in ConfigFile.txt) time period. 
 Example: If _sleep_time_between_trades_ is 100 seconds and the bot places a buy trade for ETHUSD, the bot won't check the criteria for ETHUSD for another 100 seconds.
+
+Feel free to contact me at tejas.linge101@gmail.com for **ANY** doubts, suggestions, reviews, or to just connect and talk about Algo Trading Projects!
