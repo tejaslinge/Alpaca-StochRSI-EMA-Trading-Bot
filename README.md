@@ -17,4 +17,5 @@ Trading Bot built using the Alpaca API in Python. Indicators used for Signal Gen
 ## Root Dir
 
 1. config_params.py: Initializes all the params set by the user in ConfigFile.txt
-2. indicator.py: Calculates values and generates signals for all the indicators enabled by the user
+2. indicator.py: Calculates values and generates signals for all the indicators enabled 
+3. main.py: Trading Bot
