@@ -377,8 +377,8 @@ def sell(current_coin, quantity, buy_price, highest_price):
 
 def mail_alert(mail_content, sleep_time):
     # The mail addresses and password
-    sender_address = 'davidbrito.alpaca@gmail.com'
-    sender_pass = 'DavidBritoAlpaca001'
+    sender_address = 'sender_address'
+    sender_pass = 'sender_pass'
     receiver_address = 'tejas.linge101@gmail.com'
 
     # Setup MIME
