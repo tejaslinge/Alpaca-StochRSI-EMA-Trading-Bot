@@ -19,3 +19,9 @@ Trading Bot built using the Alpaca API in Python. Indicators used for Signal Gen
 1. config_params.py: Initializes all the params set by the user in ConfigFile.txt
 2. indicator.py: Calculates values and generates signals for all the indicators enabled 
 3. main.py: Signal generation, decision-making, trade execution, trade monitoring, email alerts
+
+After the bot starts checking for the buy/sell criteria and places the first trade, there will be 3 new files created in the *ORDERS* folder.
+1. Orders.csv: CSV file with all the trades (buy and sell both) placed by the bot
+2. Open Orders.csv: CSV file with all the open positions held by the bot. The bot will check for returns using this file and sell once the sell criteria (Stop Loss/Limit Price/Trailing Stop) has been met. The bot will remove the position from _Open Orders.csv_ once it's closed.
+3. Time and Coins.csv: Using this file, the bot will ensure that no 2 (or more) trades are placed for the same ticker in the _sleep_time_between_trades_ time period. 
+Example: If _sleep_time_between_trades_ is 100 seconds and the bot places a buy trade for ETHUSD, the bot won't check the criteria for ETHUSD for another 100 seconds.
