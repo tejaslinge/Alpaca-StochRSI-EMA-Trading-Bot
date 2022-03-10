@@ -1,0 +1,5 @@
+{
+    "APCA-API-KEY-ID" : "PKGBV1ZPJGCUDHWZNSPM",
+    "APCA-API-SECRET-KEY" : "yDdA7iZyvPfDugRwvPgv97vZLTLPFD6mskgP1CbG",
+    "BASE-URL" : "https://paper-api.alpaca.markets"
+}
