@@ -19,11 +19,8 @@ key = json.loads(open('AUTH/authAlpaca.txt', 'r').read())
 api = alpaca.REST(key['APCA-API-KEY-ID'], key['APCA-API-SECRET-KEY'], base_url= key['BASE-URL'], api_version = 'v2')
 tickers = open('AUTH/Tickers.txt', 'r').read() # Tickers
 tickers = tickers.split()
-# auth = json.loads(open('AUTH/authBinance.txt', 'r').read()) # API-KEY and API-SECRET
-# client = Client(auth["API-KEY"], auth["API-SECRET"])
 
 # Function to fetch data
-# Change get_data to fetch data from Alpaca
 def get_data(ticker, timeframe= timeframe, start_date = int(start_date), exchanges = exchange):
     df = api.get_crypto_bars(ticker, timeframe, (dt.now() - timedelta(days = start_date)).strftime("%Y-%m-%d"), dt.now().strftime("%Y-%m-%d"), exchanges = exchange).df
     df.reset_index(inplace = True)
@@ -32,11 +29,7 @@ def get_data(ticker, timeframe= timeframe, start_date = int(start_date), exchang
     return df
 
 def check_params(tickers, run):
-    """ETH BTC DOGE"""
-    """BTC DOGE"""
     tickers_check = tickers
-
-    # tickers_bought = []
 
     for ticker in tickers_check:
         print("Fetching Data for:", ticker)
@@ -48,13 +41,12 @@ def check_params(tickers, run):
         if stoch == 'True' and stoch_rsi == 'False' and ema == 'False': # Stoch
             df = stochastic(df, TYPE = 'Stoch')
             print("Calculating Signals for Stoch")
-            # df = implement_stoch_strategy(df, stoch_smoothk, stoch_smoothd)
             signal_list = list(df['Stoch Signal'].iloc[ -lookback_period : ])
 
             signal_count = 0
             for signal in signal_list:
                 signal_count += 1
-    #                             print(signal)
+                
                 if signal == 1:
                     mail_content = buy(ticker) # buy ticker
                     # tickers_bought.append(ticker)
@@ -65,12 +57,9 @@ def check_params(tickers, run):
                     break
             if signal_count == lookback_period:
                 print('No Buy Signal Found for Stoch')
-            # print("signal != 1")        
                     
         elif stoch == 'False' and stoch_rsi == 'True' and ema == 'False': # StochRSI
             print("Calculating Signals for StochRSI")
-            # df = stochRSI(df)
-            # df = implement_stochRSI_strategy(df, stochRSI_length)
             df = rsi(df)
             df = stochastic(df, TYPE = 'StochRSI')
 
@@ -81,9 +70,8 @@ def check_params(tickers, run):
                 signal_count += 1
                 # print(signal)
                 if signal == 1:
-    #                                 print('place buy order')
+                    
                     mail_content = buy(ticker)
-                    # tickers_bought.append(ticker)
                     mail_alert(mail_content, 0)
                     order_csv = pd.read_csv('ORDERS/Open Orders.csv')
                     open_positions = len(list(order_csv.index))
@@ -93,7 +81,6 @@ def check_params(tickers, run):
                 print('No Buy Signal Found for StochRSI')
 
         elif stoch == 'False' and stoch_rsi == 'False' and ema == 'True': # EMA
-            ######
             print("Calculating Signals for EMA")
             df = implement_ema_strategy(df)
 
@@ -103,11 +90,8 @@ def check_params(tickers, run):
 
             for signal in signal_list:
                 signal_count += 1
-    #                             print(signal)
                 if signal == 1:
-                    # print('place buy order')
                     mail_content = buy(ticker)
-                    # tickers_bought.append(ticker)
                     mail_alert(mail_content, 0)
                     order_csv = pd.read_csv('ORDERS/Open Orders.csv')
                     open_positions = len(list(order_csv.index))
@@ -118,14 +102,10 @@ def check_params(tickers, run):
 
         elif stoch == 'True' and stoch_rsi == 'True' and ema == 'True': # All 3
             print("Calculating Signals for Stoch + StochRSI + EMA")
-            df = stochastic(df, TYPE = 'Stochastic') 
-            # df = implement_stoch_strategy(df, stoch_smoothk, stoch_smoothd)
-            # df = stochRSI(df)
+            df = stochastic(df, TYPE = 'Stochastic')
             
             df = rsi(df)
             df = stochastic(df, TYPE = 'StochRSI')
-            # df = implement_stochRSI_strategy(df, stochRSI_length)
-            # df = stochRSI(df)
             df = implement_ema_strategy(df)
 
             stoch_signal_list = list(df['Stoch Signal'].iloc[ -lookback_period : ])
@@ -164,10 +144,6 @@ def check_params(tickers, run):
         elif stoch == 'True' and stoch_rsi == 'True' and ema == 'False': # Stoch + StochRSI
             print("Calculating Signals for Stoch + StochRSI")
             df = stochastic(df, TYPE = 'Stoch')
-            # df = implement_stoch_strategy(df, stoch_smoothk, stoch_smoothd)
-
-            # df = stochRSI(df)
-            # df = implement_stochRSI_strategy(df, stochRSI_length)
             df = rsi(df)
             df = stochastic(df, TYPE = 'StochRSI')
 
@@ -200,12 +176,9 @@ def check_params(tickers, run):
 
         elif stoch_rsi == 'True' and ema == 'True' and stoch == 'False': # StochRSI + EMA
             print("Calculating Signals for StochRSI + EMA")
-            # df = stochRSI(df)
-            # df = implement_stochRSI_strategy(df, stochRSI_length)
             df = rsi(df)
             df = stochastic(df, TYPE = 'StochRSI')
 
-            # df = stochRSI(df)
             df = implement_ema_strategy(df)
 
             stochRSI_signal_list = list(df['StochRSI Signal'].iloc[ -lookback_period : ])
@@ -237,8 +210,6 @@ def check_params(tickers, run):
         elif stoch_rsi == 'False' and ema == 'True' and stoch == 'True': # EMA + Stoch
             print("Calculating Signals for EMA + Stoch")
             df = stochastic(df, TYPE = "Stochastic")
-            # df = implement_stoch_strategy(df, stoch_smoothk, stoch_smoothd)
-
             df = implement_ema_strategy(df)
 
             stoch_signal_list = list(df['Stoch Signal'].iloc[ -lookback_period : ])
@@ -276,14 +247,9 @@ def order_files(coin_to_buy, price_coin, highest_price, targetPositionSize, targ
     if os.path.isfile('ORDERS/Orders.csv'):
 #         print('Orders IFFF')
         df = pd.read_csv('ORDERS/Orders.csv')
-#         df.drop(columns= 'Unnamed: 0', inplace = True)
-        # df.loc[len(df.index)] = [dt.now().strftime("%Y-%m-%d %H:%M:%S"), coin_to_buy, 'buy',
-        #                          price_coin, highest_price, targetPositionSize, targetPositionSize*price_coin, api.get_account().cash, target_price, stop_loss_price, ActivateTrailingStopAt] 
         df.loc[len(df.index)] = [dt.now().strftime("%Y-%m-%d %H:%M:%S"), coin_to_buy, 'buy',
                                  price_coin, '-', highest_price, targetPositionSize, targetPositionSize*price_coin, api.get_account().cash, target_price, stop_loss_price, ActivateTrailingStopAt]
         df.to_csv('ORDERS/Orders.csv', index = False)
-        # filesDone += 1
-        # files.remove('Orders')
     else:    
         # print('Orders ELSEEE')
         df = pd.DataFrame()
@@ -291,52 +257,31 @@ def order_files(coin_to_buy, price_coin, highest_price, targetPositionSize, targ
         df.loc[len(df.index)] = [dt.now().strftime("%Y-%m-%d %H:%M:%S"), coin_to_buy, 'buy',
                                  price_coin, '-', highest_price, targetPositionSize, targetPositionSize*price_coin, api.get_account().cash, target_price, stop_loss_price, ActivateTrailingStopAt]
         df.to_csv('ORDERS/Orders.csv', index = False)
-        # filesDone += 1
-        # files.remove('Orders')
         
         
     if os.path.isfile('ORDERS/Time and Coins.csv'):
-        # print('Time AND COINS IFFF')
         df1 = pd.read_csv('ORDERS/Time and Coins.csv')
-#         df.drop(columns= 'Unnamed: 0', inplace = True)
         df1.loc[len(df.index)] = [dt.now().strftime("%Y-%m-%d %H:%M:%S"), coin_to_buy]
         df1.to_csv('ORDERS/Time and Coins.csv', index = False)
-        # filesDone += 1
-        # files.remove('Time and Coins')
         
     else:    
-        # print('Time AND COINS ELSEEE')
         df1 = pd.DataFrame()
         df1[['Time', 'Ticker']] = ''
         df1.loc[len(df.index)] = [dt.now().strftime("%Y-%m-%d %H:%M:%S"), coin_to_buy]
         df1.to_csv('ORDERS/Time and Coins.csv', index = False)
-        # filesDone += 1
-        # files.remove('Time and Coins')
         
     if os.path.isfile('ORDERS/Open Orders.csv'):
-        # print('Open Orders IFFF')
         df2 = pd.read_csv('ORDERS/Open Orders.csv')
-#         df.drop(columns= 'Unnamed: 0', inplace = True)
         df2.loc[len(df.index)] = [dt.now().strftime("%Y-%m-%d %H:%M:%S"), coin_to_buy, 'buy',
                                  price_coin, '-', highest_price, targetPositionSize, targetPositionSize*price_coin, api.get_account().cash, target_price, stop_loss_price, ActivateTrailingStopAt] 
         df2.to_csv('ORDERS/Open Orders.csv', index = False)
-        # filesDone += 1
-        # files.remove('Open Orders')
         
     else:    
-        # print("Open Orders ELSEEE")
         df2 = pd.DataFrame()
         df2[['Time', 'Ticker', 'Type', 'Buy Price', 'Sell Price', 'Highest Price', 'Quantity', 'Total', 'Acc Balance', 'Target Price', 'Stop Loss Price', 'ActivateTrailingStopAt']] = ''
         df2.loc[len(df.index)] = [dt.now().strftime("%Y-%m-%d %H:%M:%S"), coin_to_buy, 'buy',
                                  price_coin, '-', highest_price, targetPositionSize, targetPositionSize*price_coin, api.get_account().cash, target_price, stop_loss_price, ActivateTrailingStopAt]
         df2.to_csv('ORDERS/Open Orders.csv', index = False)
-        # filesDone += 1
-        # files.remove('Open Orders')
-        
-    # if filesDone == 3:
-    #     return "All Order Files Done"
-    # else: 
-    #     return 'File(s) not Done: {}'.format(files)
 
 def buy(coin_to_buy: str, trade_cap_percent = trade_capital_percent):
 #     cashBalance = api.get_account().cash
@@ -359,14 +304,12 @@ def buy(coin_to_buy: str, trade_cap_percent = trade_capital_percent):
 
 def sell(current_coin, quantity, buy_price, highest_price):
     # sells current_stock
-#     quantity = float(api.get_position(str(current_coin)).qty)    
     sell_price = api.get_latest_crypto_trade(str(current_coin), 'CBSE').price
-#     api.cancel_all_orders() # cancels all pending (to be filled) orders 
     
     api.submit_order(current_coin, quantity, 'sell', 'market', 'day')
     mail_content = '''TRADE ALERT: SELL Order Placed for {} {} at ${}'''.format(quantity, current_coin, sell_price)
     df = pd.read_csv('ORDERS/Orders.csv')
-# ['Time', 'Ticker', 'Type', 'Buy Price', 'Sell Price', 'Highest Price', 'Quantity', 'Total', 'Acc Balance', 'Target Price', 'Stop Loss Price', 'ActivateTrailingStopAt']
+
     df.loc[len(df.index)] = [dt.now().strftime("%Y-%m-%d %H:%M:%S"), current_coin, 'sell',
                              buy_price, sell_price, highest_price, quantity, quantity*sell_price, api.get_account().cash, '-', '-', '-']
         
@@ -378,7 +321,7 @@ def mail_alert(mail_content, sleep_time):
     # The mail addresses and password
     sender_address = 'sender_address'
     sender_pass = 'sender_pass'
-    receiver_address = 'tejas.linge101@gmail.com'
+    receiver_address = 'receiver_address'
 
     # Setup MIME
     message = MIMEMultipart()
@@ -429,12 +372,7 @@ def mainNEW(open_positions):
                             df.loc[i, 'Stop Loss Price'] = new_stop_loss
                             df.loc[i, 'Highest Price'] = curr_price
 
-                        lower_limit_price = df.loc[i, 'Stop Loss Price']
-
-                        # print('''Checking Returns For: {}
-                        # Quantity: {}, Target: {}, Current: {}, Stop: {}, HighestSinceBuy: {}
-
-                        # '''.format(ticker, quantity, target_price, curr_price, highest_price_since_buy, lower_limit_price))                        
+                        lower_limit_price = df.loc[i, 'Stop Loss Price']          
 
                         if (curr_price <= lower_limit_price) or (curr_price >= target_price):
                             mail_content = sell(ticker, quantity, buy_price, highest_price_since_buy)
@@ -466,7 +404,6 @@ def mainNEW(open_positions):
 
                     tickers_check = [ticker for ticker in tickers if ticker not in tickers_bought]
 
-                    ### keep this line??? Necessary to return tickers_bought from check_params??
                     # tickers_bought = check_params(tickers_check, run)
                     print("Checking Params for {}".format(tickers_check))
                     check_params(tickers_check, run)
@@ -500,27 +437,6 @@ def mainNEW(open_positions):
                     else: 
                         print("Sleeping bcause No Time and Coins File")
                         time.sleep(20)
-
-                                # remove coin index from coin_bough_df
-                        # pass
-
-
-                    """
-                    read time_at_which_ticker_was_bought_file: TICKER, TIME
-                    prev_time =
-                    curr_time = dt.now()
-                    if currr_time - prev_time <= time_betn_trades:
-                        tickers_check.pop(file index (ticker columns))
-                    """
-
-
-    #             [['Time', 'Ticker', 'Type', 'Price', 'Quantity', 'Total', 'Acc Balance', '', '', '']] 
-                    # time.sleep(30)
-
-                    # else: time.sleep(30)
-                # print("Exited Returns Check")
-                # print("Sleeping for {} secs".format(sleep_time))
-                # time.sleep(10)
         except Exception as e:
             print(e)
             mail_alert("The Bot Stopped Running on {} at {}".format(dt.now().strftime("%Y-%m-%d"), dt.now().strftime("%H:%M:%S")), 0)
