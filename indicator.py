@@ -154,10 +154,15 @@ def StochRSI_EMA(series, period=14, smoothK=3, smoothD=3):
 
     return stochrsi, stochrsi_K, stochrsi_D
 
-# stochRSI(ticker, period=14, smoothK=3, smoothD=3) VERIFIED
-# stochastic(ticker, period = 14, smoothK = 3, smoothD = 3) VERIFIED
-# StochRSI_EMA(series, period=14, smoothK=3, smoothD=3) VERIFIED
-# RSI(series, period=14) VERIFIED
-# EMA (ticker, period = 5, smoothing = 2)
+# EMA Signal Generation
+def implement_ema_strategy(prices, period = ema_period):
+    cols = list(prices.columns)
+    ema = prices['Close'].ewm(span = period, adjust = False).mean()
+    prices["EMA"] = ema
+    prices['Signal_EMA'] = np.where(prices['EMA'] < prices['Close'], 1.0, 0.0)
+    # prices['EMA Signal'] = prices['Signal_EMA'].diff()    
+    prices['EMA Signal'] = prices['Signal_EMA']
+    cols += ["EMA Signal"]
+    return prices[cols]
 
 ############################################################
