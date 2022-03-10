@@ -12,7 +12,6 @@ from email.mime.text import MIMEText
 
 import alpaca_trade_api as alpaca
 from indicator import *
-from generate_signal import *
 from config_params import *
 
 # Files
