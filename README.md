@@ -1,2 +1,2 @@
 # Technical-Trading-Bot-
-Indicators used for Signal Generation: EMA, StochRSI, and Stochastic Oscillator
+Trading Bot built using the Alpaca API in Python. Indicators used for Signal Generation: EMA, StochRSI, and Stochastic Oscillator
